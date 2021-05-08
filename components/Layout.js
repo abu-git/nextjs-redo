@@ -2,12 +2,14 @@
 //  Nav is added to Layout component which wraps around _app.js so it appears on every page.  
 
 import Nav from './Nav'
-import Header from './Header' 
+import Header from './Header'
+import Meta from './Meta' 
 import styles from '../styles/Layout.module.css'
 
 const Layout = ({children}) => {
     return (
         <>
+            <Meta />
             <Nav />
             <div className={styles.container}>
                 <main className={styles.main}>
