@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { server } from '../../../config'
 import Link from 'next/link'
 
 const article = ({ article }) => {
@@ -20,6 +21,36 @@ const article = ({ article }) => {
     )
 }
 
+// getStaticProps fetches data at build time
+export const getStaticProps = async (context) => {
+    const res = await fetch(`${server}/api/articles/${context.params.id}`)
+
+    const article = await res.json()
+
+    return {
+        props: {
+            article
+        }
+    }
+}
+
+// getStaticPaths specifies dynamic routes to pre-render pages based on data
+export const getStaticPaths = async () => {
+    const res = await fetch(`${server}/api/articles`)
+
+    const articles = await res.json()
+
+    const ids = articles.map(article => article.id)
+
+    const paths = ids.map(id => ({params: {id: id.toString()}}))
+
+    return {
+        paths,
+        fallback: false
+    }
+}
+
+/*
 // getStaticProps fetches data at build time
 export const getStaticProps = async (context) => {
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.params.id}`)
@@ -48,6 +79,8 @@ export const getStaticPaths = async () => {
         fallback: false
     }
 }
+
+*/
 
 
 /*
